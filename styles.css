@@ -49,7 +49,6 @@ body {
 
   position: relative;
 
-  /* border: 1vw solid var(--cblue); */
   border-radius: 100%;
 }
 
@@ -67,6 +66,7 @@ body {
 
 .time-marker .border {
   stroke: var(--cblue);
+  opacity: 0.4;
 }
 
 /* ====---------------====
