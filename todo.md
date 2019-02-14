@@ -18,9 +18,11 @@
 
 ## Weather
 
--- based on zip
--- check every minute
--- change BG based on conditions
+- based on zip
+- check every minute
+- change BG based on conditions
+
+---
 
 ## Rotating sun/moon
 
