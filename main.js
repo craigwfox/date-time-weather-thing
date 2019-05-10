@@ -3,6 +3,7 @@ const data = {
   time: document.querySelector('.time'),
   date: document.querySelector('.date'),
   marker: document.querySelector('#marker'),
+  zipform: document.querySelector('#getzip'),
   positioning: [
     ['0', '165'],
     ['1', '180'],
@@ -30,6 +31,53 @@ const data = {
     ['23', '150']
   ]
 };
+
+// ====---------------====
+// Get location
+// ====---------------====
+let zip = '72034';
+
+const browserLocation = function getLocationUsingGeo() {
+  return new Promise(function(resolve, reject) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      resolve([position.coords.latitude, position.coords.longitude]);
+    });
+  });
+};
+
+const makexhr = function(url) {
+  return new Promise(function(resolve, reject) {
+    let xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      resolve(JSON.parse(xhr.responseText));
+    };
+    xhr.onerror = reject;
+    xhr.open('GET', url);
+    xhr.send();
+  });
+};
+
+const getCoords = function getUserCoordinates() {
+  if (navigator.geolocation) {
+    // use browser location data
+    browserLocation().then(position => {
+      makexhr(
+        `https://api.weather.gov/points/${position[0]},${position[1]}`
+      ).then(result => {
+        console.log(result);
+
+        makexhr(result.properties.forecast).then(result => {
+          // console.log(result.properties);
+        });
+      });
+    });
+  } else {
+    console.log('has location off');
+  }
+
+  return;
+};
+getCoords();
 
 // ====---------------====
 // Make numbers two digits if less than 10
