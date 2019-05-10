@@ -29,13 +29,13 @@ const data = {
     ['21', '120'],
     ['22', '135'],
     ['23', '150']
-  ]
+  ],
+  zip: '72034'
 };
 
 // ====---------------====
 // Get location
 // ====---------------====
-let zip = '72034';
 
 const browserLocation = function getLocationUsingGeo() {
   return new Promise(function(resolve, reject) {
