@@ -2,6 +2,8 @@ const data = {
   dateobj: new Date(),
   time: document.querySelector('.time'),
   date: document.querySelector('.date'),
+  temperature: document.querySelector('.temperature'),
+  conditions: document.querySelector('.conditions'),
   marker: document.querySelector('#marker'),
   zipform: document.querySelector('#getzip'),
   positioning: [
@@ -64,10 +66,18 @@ const getCoords = function getUserCoordinates() {
       makexhr(
         `https://api.weather.gov/points/${position[0]},${position[1]}`
       ).then(result => {
-        console.log(result);
+        console.log(result.properties);
+        makexhr(result.properties.forecastHourly).then(result => {
+          let curtemp = result.properties.periods[0].temperature,
+            curcond = result.properties.periods[0].shortForecast;
 
-        makexhr(result.properties.forecast).then(result => {
-          // console.log(result.properties);
+          data.temperature.innerHTML = `${curtemp}<span>F</span>`;
+
+          document
+            .querySelector('body')
+            .classList.add(`current-temp-${curtemp}`);
+
+          data.conditions.innerHTML = curcond;
         });
       });
     });
@@ -92,7 +102,7 @@ const makeTwoDigit = function addALeadingZeroToSingleDigit(number) {
 // ====---------------====
 // Time
 // ====---------------====
-const getCombinedTime = function getHoursMinutes(dateobj) {
+const getCombinedTime = function getHoursMinutes() {
   let hours = data.dateobj.getHours(),
     minutes = data.dateobj.getMinutes();
 
@@ -103,7 +113,7 @@ data.time.innerHTML = getCombinedTime(data.dateobj);
 // ====---------------====
 // Date
 // ====---------------====
-const getCombinedDate = function getDate(dateobj) {
+const getCombinedDate = function getDate() {
   let month = data.dateobj.getMonth() + 1,
     day = data.dateobj.getDate(),
     year = data.dateobj.getFullYear();
